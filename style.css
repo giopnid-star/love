@@ -262,6 +262,31 @@ h1 {
 	opacity: 0.95;
 }
 
+.comparisons {
+	margin: 1rem auto 0.3rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+	gap: 0.6rem;
+	width: min(700px, 100%);
+}
+
+.comparison-item {
+	padding: 0.6rem 0.8rem;
+	border-radius: 14px;
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 184, 215, 0.2));
+	border: 1px solid rgba(255, 240, 248, 0.36);
+	box-shadow: 0 8px 20px rgba(40, 0, 18, 0.2);
+	font-size: 1.05rem;
+	line-height: 1.35;
+	text-align: left;
+	transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.comparison-item:hover {
+	transform: translateY(-4px) rotate(-1deg);
+	box-shadow: 0 12px 24px rgba(40, 0, 18, 0.28);
+}
+
 .opened-note {
 	margin: 1.4rem auto 0;
 	display: inline-flex;
@@ -1155,6 +1180,10 @@ h2 {
 	.wishes-grid {
 		grid-template-columns: 1fr;
 		gap: 0.65rem;
+	}
+
+	.comparisons {
+		grid-template-columns: 1fr;
 	}
 
 	.tenor-block {
