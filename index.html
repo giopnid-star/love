@@ -80,6 +80,14 @@
 
             if (typeof window.navigateWithHearts === 'function') {
                 window.navigateWithHearts('/main.html', yesButton);
+
+                setTimeout(() => {
+                    window.location.assign('/main.html');
+                }, 720);
+
+                setTimeout(() => {
+                    window.location.replace('/main.html');
+                }, 1150);
                 return;
             }
 
