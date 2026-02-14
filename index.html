@@ -54,9 +54,19 @@
         const yesButton = document.getElementById('yesBtn');
         const noButton = document.getElementById('noBtn');
         const answerRow = document.getElementById('answerRow');
+        const subtitle = document.querySelector('.subtitle');
 
         let noClicks = 0;
         const maxNoClicks = 7;
+        const noMessages = [
+            'Ты уверена? 💭',
+            'Точно уверена? 🥺',
+            'Может всё-таки «Да»? 💘',
+            'Подумай ещё раз, пожалуйста 💞',
+            'Ну правда, ты очень важна для меня ❤️',
+            'Последний шанс нажать «Да» ✨',
+            'Сердце подсказывает выбрать «Да» 💖'
+        ];
 
         yesButton.addEventListener('click', () => {
             if (typeof window.navigateWithHearts === 'function') {
@@ -70,12 +80,17 @@
         noButton.addEventListener('click', () => {
             noClicks += 1;
 
+            if (subtitle) {
+                const messageIndex = Math.min(noClicks - 1, noMessages.length - 1);
+                subtitle.textContent = noMessages[messageIndex];
+            }
+
             const yesScale = 1 + noClicks * 0.16;
             yesButton.style.transform = `scale(${yesScale})`;
 
-            const noScale = Math.max(0.25, 1 - noClicks * 0.13);
+            const noScale = Math.max(0.38, 1 - noClicks * 0.09);
             noButton.style.transform = `scale(${noScale})`;
-            noButton.style.opacity = `${Math.max(0, 1 - noClicks * 0.2)}`;
+            noButton.style.opacity = '1';
 
             if (noClicks >= maxNoClicks) {
                 noButton.classList.add('hidden-no');
