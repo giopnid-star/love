@@ -814,29 +814,107 @@ h2 {
 }
 
 @media (max-width: 600px) {
+	body {
+		font-size: 15px;
+	}
+
+	.hero {
+		padding: 1.6rem 0.9rem 2rem;
+		gap: 1.1rem;
+	}
+
 	.card,
 	.wish {
-		padding: 2rem 1.2rem;
+		width: 100%;
+		padding: 1.6rem 1rem;
 		border-radius: 20px;
 	}
 
-	.btn {
-		width: 100%;
+	h1 {
+		font-size: clamp(2rem, 10vw, 3rem);
 	}
 
-	.fun-list span {
-		width: 100%;
+	h2 {
+		font-size: clamp(1.8rem, 9vw, 2.5rem);
 	}
 
-	.wishes-grid {
-		grid-template-columns: 1fr;
+	.subtitle,
+	.wish-intro {
+		font-size: 0.98rem;
+		line-height: 1.65;
+	}
+
+	.kitten-sticker {
+		width: 122px;
+		height: 122px;
+		margin-bottom: 0.8rem;
+	}
+
+	.kitten-video {
+		width: 78px;
+		height: 78px;
+		border-radius: 16px;
 	}
 
 	.answer-row {
 		gap: 0.7rem;
 	}
 
+	.answer-btn {
+		width: 100%;
+		max-width: 280px;
+		padding: 0.85rem 1rem;
+	}
+
+	.btn {
+		width: 100%;
+		margin-top: 1rem;
+		padding: 0.85rem 1rem;
+	}
+
+	.fun-list span {
+		width: 100%;
+	}
+
+	.mood-grid,
+	.wishes-grid {
+		grid-template-columns: 1fr;
+		gap: 0.65rem;
+	}
+
+	.mood-item,
+	.wish-card {
+		padding: 0.8rem 0.85rem;
+	}
+
 	.yes-btn.only-yes {
 		transform: scale(1.35) !important;
+		padding: 0.95rem 1.15rem;
+	}
+}
+
+@media (max-width: 420px) {
+	.hero {
+		padding: 1.1rem 0.65rem 1.6rem;
+	}
+
+	.card,
+	.wish {
+		padding: 1.25rem 0.8rem;
+		border-radius: 16px;
+	}
+
+	.date {
+		font-size: 0.76rem;
+		letter-spacing: 0.1em;
+	}
+
+	.btn,
+	.answer-btn {
+		font-size: 0.94rem;
+	}
+
+	.yes-btn.only-yes {
+		transform: scale(1.18) !important;
 	}
 }

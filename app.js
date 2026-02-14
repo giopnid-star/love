@@ -1,6 +1,8 @@
 (function () {
     const NAV_DELAY = 680;
-    const CLICK_BURST_COUNT = 14;
+    const isMobile = window.matchMedia('(max-width: 600px)').matches;
+    const CLICK_BURST_COUNT = isMobile ? 9 : 14;
+    const NAV_BURST_COUNT = isMobile ? 22 : 34;
 
     function createBurstHeart(x, y, angle, distance, delay) {
         const heart = document.createElement('span');
@@ -55,7 +57,7 @@
         }
 
         const element = sourceElement || document.body;
-        burstHeartsFromElement(element, 34);
+        burstHeartsFromElement(element, NAV_BURST_COUNT);
         document.body.classList.add('page-fade-out');
 
         setTimeout(() => {
