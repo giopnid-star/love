@@ -55,6 +55,7 @@
         const noButton = document.getElementById('noBtn');
         const answerRow = document.getElementById('answerRow');
         const subtitle = document.querySelector('.subtitle');
+        let isNavigating = false;
 
         let noClicks = 0;
         const maxNoClicks = 7;
@@ -69,12 +70,20 @@
         ];
 
         yesButton.addEventListener('click', () => {
-            if (typeof window.navigateWithHearts === 'function') {
-                window.navigateWithHearts('main.html', yesButton);
+            if (isNavigating) {
                 return;
             }
 
-            window.location.href = 'main.html';
+            isNavigating = true;
+            yesButton.disabled = true;
+            noButton.disabled = true;
+
+            if (typeof window.navigateWithHearts === 'function') {
+                window.navigateWithHearts('/main.html', yesButton);
+                return;
+            }
+
+            window.location.replace('/main.html');
         });
 
         noButton.addEventListener('click', () => {
