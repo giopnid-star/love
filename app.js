@@ -251,6 +251,26 @@
         });
     }
 
+    function startWishesSequentialReveal() {
+        const wishesGrid = document.querySelector('.wishes-grid');
+        if (!wishesGrid) {
+            return;
+        }
+
+        const wishCards = Array.from(wishesGrid.querySelectorAll('.wish-card'));
+        if (!wishCards.length) {
+            return;
+        }
+
+        wishesGrid.classList.add('is-sequenced');
+
+        wishCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.classList.add('is-visible');
+            }, 130 + index * 130);
+        });
+    }
+
     function navigateWithHearts(url, sourceElement) {
         if (!url) {
             return;
@@ -301,4 +321,5 @@
 
     startGifHeartEmitter();
     startEdgeWords();
+    startWishesSequentialReveal();
 })();
