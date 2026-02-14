@@ -188,8 +188,8 @@ body.page-fade-out {
 .wish::before {
 	content: 'For Fatima ✨';
 	position: absolute;
-	top: 14px;
-	right: -34px;
+	top: 26px;
+	right: -28px;
 	padding: 0.35rem 2.4rem;
 	font-size: 0.74rem;
 	font-weight: 700;
