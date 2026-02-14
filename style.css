@@ -127,6 +127,43 @@ body.page-fade-out {
 	top: -50%;
 }
 
+.edge-words-layer {
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 3;
+}
+
+.edge-word {
+	position: fixed;
+	pointer-events: auto;
+	padding: 0.42rem 0.72rem;
+	border-radius: 999px;
+	border: 1px solid rgba(255, 219, 235, 0.55);
+	background: linear-gradient(135deg, rgba(255, 240, 248, 0.8), rgba(255, 199, 223, 0.78));
+	color: #8a0040;
+	font-family: 'Marck Script', cursive;
+	font-size: 1.22rem;
+	line-height: 1;
+	box-shadow: 0 10px 20px rgba(60, 0, 29, 0.24);
+	cursor: inherit;
+	animation: edgeWordSway var(--sway-duration, 5.3s) ease-in-out infinite;
+	transition: filter 0.25s ease;
+	user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	transform-origin: center;
+}
+
+.edge-word:hover {
+	filter: brightness(1.05);
+}
+
+.edge-word.is-dropping {
+	animation: edgeWordDrop 1.25s ease-in forwards;
+	pointer-events: none;
+}
+
 .gif-heart {
 	position: fixed;
 	z-index: 9997;
@@ -1142,6 +1179,33 @@ h2 {
 			calc(-50% + var(--gif-heart-x, 0px)),
 			calc(-50% + var(--gif-heart-y, -58px))
 		) scale(var(--gif-heart-scale, 1)) rotate(45deg);
+	}
+}
+
+@keyframes edgeWordSway {
+	0%,
+	100% {
+		transform: rotate(0deg) translateX(0);
+	}
+	25% {
+		transform: rotate(-3deg) translateX(-2px);
+	}
+	50% {
+		transform: rotate(3deg) translateX(2px);
+	}
+	75% {
+		transform: rotate(-2deg) translateX(-1px);
+	}
+}
+
+@keyframes edgeWordDrop {
+	0% {
+		opacity: 1;
+		transform: rotate(0deg) translateY(0);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(120vh) rotate(var(--drop-rotate, 8deg)) scale(0.92);
 	}
 }
 

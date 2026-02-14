@@ -6,6 +6,21 @@
     const TRAIL_INTERVAL = isMobile ? 70 : 38;
     const TRAIL_SPAWN_CHANCE = isMobile ? 0.62 : 0.86;
     const GIF_HEART_INTERVAL = isMobile ? 720 : 460;
+    const EDGE_WORDS_COUNT = isMobile ? 12 : 24;
+    const EDGE_WORD_POOL = [
+        'любовь',
+        'нежность',
+        'обнимашки',
+        'поцелуй',
+        'счастье',
+        'тепло',
+        'улыбка',
+        'милая',
+        'сердце',
+        'вдохновение',
+        'романтика',
+        'чудо'
+    ];
 
     let lastTrailTime = 0;
 
@@ -119,6 +134,123 @@
         setInterval(emit, GIF_HEART_INTERVAL);
     }
 
+    function randomEdgeWord(excludedWord) {
+        const candidates = EDGE_WORD_POOL.filter((word) => word !== excludedWord);
+        const source = candidates.length ? candidates : EDGE_WORD_POOL;
+        return source[Math.floor(Math.random() * source.length)];
+    }
+
+    function getBlockedRects() {
+        return Array.from(document.querySelectorAll('.card, .wish')).map((element) => element.getBoundingClientRect());
+    }
+
+    function rectsOverlap(rectA, rectB, padding) {
+        return !(
+            rectA.right + padding < rectB.left
+            || rectA.left - padding > rectB.right
+            || rectA.bottom + padding < rectB.top
+            || rectA.top - padding > rectB.bottom
+        );
+    }
+
+    function collidesWithAny(candidateRect, blockedRects, occupiedRects, padding) {
+        const inBlocked = blockedRects.some((rect) => rectsOverlap(candidateRect, rect, padding));
+        if (inBlocked) {
+            return true;
+        }
+
+        return occupiedRects.some((rect) => rectsOverlap(candidateRect, rect, padding));
+    }
+
+    function placeEdgeWordRandomly(wordElement) {
+        const blockedRects = getBlockedRects();
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const margin = isMobile ? 18 : 26;
+        const padding = isMobile ? 8 : 12;
+        const occupiedRects = Array.from(document.querySelectorAll('.edge-word'))
+            .filter((element) => element !== wordElement && !element.classList.contains('is-dropping'))
+            .map((element) => element.getBoundingClientRect());
+
+        const currentRect = wordElement.getBoundingClientRect();
+        const wordWidth = Math.max(currentRect.width || 0, isMobile ? 108 : 128);
+        const wordHeight = Math.max(currentRect.height || 0, isMobile ? 34 : 38);
+
+        let chosenX = margin;
+        let chosenY = margin;
+
+        for (let attempt = 0; attempt < 140; attempt += 1) {
+            const x = margin + Math.random() * Math.max(1, width - wordWidth - margin * 2);
+            const y = margin + Math.random() * Math.max(1, height - wordHeight - margin * 2);
+            const candidateRect = {
+                left: x,
+                top: y,
+                right: x + wordWidth,
+                bottom: y + wordHeight
+            };
+
+            if (!collidesWithAny(candidateRect, blockedRects, occupiedRects, padding)) {
+                chosenX = x;
+                chosenY = y;
+                break;
+            }
+        }
+
+        wordElement.style.left = `${chosenX}px`;
+        wordElement.style.top = `${chosenY}px`;
+    }
+
+    function createEdgeWordElement() {
+        const wordElement = document.createElement('button');
+        wordElement.type = 'button';
+        wordElement.className = 'edge-word';
+        wordElement.textContent = randomEdgeWord('');
+        wordElement.style.setProperty('--sway-duration', `${(4.6 + Math.random() * 2.4).toFixed(2)}s`);
+        wordElement.style.setProperty('--drop-rotate', `${Math.floor(Math.random() * 30 - 15)}deg`);
+
+        wordElement.addEventListener('click', () => {
+            if (wordElement.classList.contains('is-dropping')) {
+                return;
+            }
+
+            const rect = wordElement.getBoundingClientRect();
+            burstHeartsAtPoint(rect.left + rect.width / 2, rect.top + rect.height / 2, isMobile ? 6 : 10);
+
+            wordElement.classList.add('is-dropping');
+
+            setTimeout(() => {
+                const currentWord = wordElement.textContent;
+                wordElement.textContent = randomEdgeWord(currentWord);
+                wordElement.style.setProperty('--sway-duration', `${(4.6 + Math.random() * 2.4).toFixed(2)}s`);
+                wordElement.style.setProperty('--drop-rotate', `${Math.floor(Math.random() * 30 - 15)}deg`);
+                wordElement.classList.remove('is-dropping');
+                placeEdgeWordRandomly(wordElement);
+            }, 1500);
+        });
+
+        return wordElement;
+    }
+
+    function startEdgeWords() {
+        const layer = document.createElement('div');
+        layer.className = 'edge-words-layer';
+        document.body.appendChild(layer);
+
+        for (let index = 0; index < EDGE_WORDS_COUNT; index += 1) {
+            const wordElement = createEdgeWordElement();
+            layer.appendChild(wordElement);
+            placeEdgeWordRandomly(wordElement);
+        }
+
+        window.addEventListener('resize', () => {
+            Array.from(document.querySelectorAll('.edge-word')).forEach((wordElement) => {
+                if (!wordElement.classList.contains('is-dropping')) {
+                    placeEdgeWordRandomly(wordElement);
+                }
+            });
+        });
+    }
+
     function navigateWithHearts(url, sourceElement) {
         if (!url) {
             return;
@@ -168,4 +300,5 @@
     window.burstHeartsAtPoint = burstHeartsAtPoint;
 
     startGifHeartEmitter();
+    startEdgeWords();
 })();
