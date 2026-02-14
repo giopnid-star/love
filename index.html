@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фатима, ты будешь моей?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="hearts" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="petals" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <main class="hero">
+        <section class="card invite-card">
+            <p class="date">14 февраля 2026</p>
+            <div class="kitten-sticker" aria-hidden="true">
+                <video class="kitten-video" src="WhatsApp Video 2026-02-14 at 19.02.45.mp4" autoplay muted loop playsinline></video>
+                <span class="heart h1">💗</span>
+                <span class="heart h2">💖</span>
+                <span class="heart h3">💕</span>
+            </div>
+            <h1><span class="name-highlight">Фатима</span>, ты будешь моей в день Валентина?</h1>
+            <p class="subtitle">Выбирай сердцем 💘</p>
+
+            <div class="answer-row" id="answerRow">
+                <button class="answer-btn yes-btn" id="yesBtn" type="button">Да 💖</button>
+                <button class="answer-btn no-btn" id="noBtn" type="button">Нет 🙈</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const yesButton = document.getElementById('yesBtn');
+        const noButton = document.getElementById('noBtn');
+        const answerRow = document.getElementById('answerRow');
+
+        let noClicks = 0;
+        const maxNoClicks = 7;
+
+        yesButton.addEventListener('click', () => {
+            window.location.href = 'main.html';
+        });
+
+        noButton.addEventListener('click', () => {
+            noClicks += 1;
+
+            const yesScale = 1 + noClicks * 0.16;
+            yesButton.style.transform = `scale(${yesScale})`;
+
+            const noScale = Math.max(0.25, 1 - noClicks * 0.13);
+            noButton.style.transform = `scale(${noScale})`;
+            noButton.style.opacity = `${Math.max(0, 1 - noClicks * 0.2)}`;
+
+            if (noClicks >= maxNoClicks) {
+                noButton.classList.add('hidden-no');
+                yesButton.classList.add('only-yes');
+                answerRow.classList.add('only-yes-row');
+            }
+        });
+    </script>
+</body>
+</html>
