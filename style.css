@@ -390,26 +390,22 @@ h1 {
 }
 
 .tenor-block {
-	width: min(340px, 100%);
+	width: min(260px, 100%);
 	margin: 1rem auto 0.4rem;
-	border-radius: 20px;
+	border-radius: 18px;
 	overflow: hidden;
-	border: 1px solid rgba(255, 235, 245, 0.45);
-	background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 196, 221, 0.18));
-	box-shadow: 0 14px 28px rgba(35, 0, 17, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.16) inset;
-	pointer-events: none;
+	border: 1px solid rgba(255, 235, 245, 0.36);
+	background: transparent;
+	box-shadow: 0 14px 30px rgba(35, 0, 17, 0.26);
 }
 
-.tenor-block .tenor-gif-embed {
-	margin: 0 !important;
+
+.love-gif {
+	display: block;
+	width: 100%;
+	height: auto;
 	border-radius: inherit;
-	overflow: hidden;
-	pointer-events: none !important;
-}
-
-.tenor-block a,
-.tenor-block iframe {
-	pointer-events: none !important;
+	background: transparent;
 }
 
 .mood-card {
