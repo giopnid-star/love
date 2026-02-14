@@ -5,7 +5,7 @@
     const NAV_BURST_COUNT = isMobile ? 34 : 52;
     const TRAIL_INTERVAL = isMobile ? 70 : 38;
     const TRAIL_SPAWN_CHANCE = isMobile ? 0.62 : 0.86;
-    const GIF_HEART_INTERVAL = isMobile ? 720 : 460;
+    const GIF_HEART_INTERVAL = isMobile ? 520 : 320;
     const EDGE_WORDS_COUNT = isMobile ? 12 : 24;
     const EDGE_WORD_POOL = [
         'любовь',
@@ -109,25 +109,59 @@
         setTimeout(() => heart.remove(), 1250);
     }
 
+    function getImageSidePoint(rect, side) {
+        if (side === 'left') {
+            return {
+                x: rect.left + Math.random() * (rect.width * 0.15),
+                y: rect.top + Math.random() * rect.height
+            };
+        }
+
+        if (side === 'right') {
+            return {
+                x: rect.right - Math.random() * (rect.width * 0.15),
+                y: rect.top + Math.random() * rect.height
+            };
+        }
+
+        if (side === 'bottom') {
+            return {
+                x: rect.left + Math.random() * rect.width,
+                y: rect.bottom - Math.random() * (rect.height * 0.15)
+            };
+        }
+
+        return {
+            x: rect.left + Math.random() * rect.width,
+            y: rect.top + Math.random() * (rect.height * 0.15)
+        };
+    }
+
     function startGifHeartEmitter() {
-        const loveGif = document.querySelector('.love-gif');
-        if (!loveGif) {
+        const loveGifs = Array.from(document.querySelectorAll('.love-gif'));
+        if (!loveGifs.length) {
             return;
         }
 
+        const sides = ['top', 'left', 'right', 'bottom'];
+
         const emit = () => {
-            const rect = loveGif.getBoundingClientRect();
-            if (!rect.width || !rect.height) {
-                return;
-            }
+            loveGifs.forEach((loveGif) => {
+                const rect = loveGif.getBoundingClientRect();
+                if (!rect.width || !rect.height) {
+                    return;
+                }
 
-            const originX = rect.left + rect.width * (0.35 + Math.random() * 0.3);
-            const originY = rect.top + rect.height * (0.1 + Math.random() * 0.25);
-            const heartsPerTick = isMobile ? 1 : 2;
-
-            for (let i = 0; i < heartsPerTick; i += 1) {
-                createGifHeart(originX + (Math.random() - 0.5) * 14, originY + (Math.random() - 0.5) * 8);
-            }
+                const heartsPerTick = isMobile ? 2 : 5;
+                for (let i = 0; i < heartsPerTick; i += 1) {
+                    const side = sides[Math.floor(Math.random() * sides.length)];
+                    const point = getImageSidePoint(rect, side);
+                    createGifHeart(
+                        point.x + (Math.random() - 0.5) * 16,
+                        point.y + (Math.random() - 0.5) * 16
+                    );
+                }
+            });
         };
 
         emit();
