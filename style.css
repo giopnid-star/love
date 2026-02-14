@@ -127,6 +127,38 @@ body.page-fade-out {
 	top: -50%;
 }
 
+.gif-heart {
+	position: fixed;
+	z-index: 9997;
+	pointer-events: none;
+	width: 12px;
+	height: 12px;
+	background: #ff8fba;
+	transform: translate(-50%, -50%) rotate(45deg);
+	border-radius: 2px;
+	opacity: 0;
+	animation: gifHeartRise 1.18s ease-out forwards;
+	filter: drop-shadow(0 3px 6px rgba(77, 0, 31, 0.38));
+}
+
+.gif-heart::before,
+.gif-heart::after {
+	content: '';
+	position: absolute;
+	width: inherit;
+	height: inherit;
+	background: inherit;
+	border-radius: 50%;
+}
+
+.gif-heart::before {
+	left: -50%;
+}
+
+.gif-heart::after {
+	top: -50%;
+}
+
 .hero {
 	min-height: 100vh;
 	display: grid;
@@ -911,6 +943,23 @@ h2 {
 			calc(-50% + var(--trail-x, 0px)),
 			calc(-50% + var(--trail-y, -30px))
 		) scale(var(--trail-scale, 1)) rotate(45deg);
+	}
+}
+
+@keyframes gifHeartRise {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.55) rotate(45deg);
+	}
+	18% {
+		opacity: 0.95;
+	}
+	100% {
+		opacity: 0;
+		transform: translate(
+			calc(-50% + var(--gif-heart-x, 0px)),
+			calc(-50% + var(--gif-heart-y, -58px))
+		) scale(var(--gif-heart-scale, 1)) rotate(45deg);
 	}
 }
 

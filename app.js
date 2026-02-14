@@ -5,6 +5,7 @@
     const NAV_BURST_COUNT = isMobile ? 34 : 52;
     const TRAIL_INTERVAL = isMobile ? 70 : 38;
     const TRAIL_SPAWN_CHANCE = isMobile ? 0.62 : 0.86;
+    const GIF_HEART_INTERVAL = isMobile ? 720 : 460;
 
     let lastTrailTime = 0;
 
@@ -73,6 +74,51 @@
         setTimeout(() => heart.remove(), 760);
     }
 
+    function createGifHeart(x, y) {
+        const heart = document.createElement('span');
+        heart.className = 'gif-heart';
+
+        const driftX = (Math.random() - 0.5) * 56;
+        const driftY = -42 - Math.random() * 36;
+        const scale = (0.75 + Math.random() * 0.55).toFixed(2);
+        const delay = (Math.random() * 0.12).toFixed(2);
+
+        heart.style.left = `${x}px`;
+        heart.style.top = `${y}px`;
+        heart.style.setProperty('--gif-heart-x', `${driftX.toFixed(1)}px`);
+        heart.style.setProperty('--gif-heart-y', `${driftY.toFixed(1)}px`);
+        heart.style.setProperty('--gif-heart-scale', scale);
+        heart.style.animationDelay = `${delay}s`;
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 1250);
+    }
+
+    function startGifHeartEmitter() {
+        const loveGif = document.querySelector('.love-gif');
+        if (!loveGif) {
+            return;
+        }
+
+        const emit = () => {
+            const rect = loveGif.getBoundingClientRect();
+            if (!rect.width || !rect.height) {
+                return;
+            }
+
+            const originX = rect.left + rect.width * (0.35 + Math.random() * 0.3);
+            const originY = rect.top + rect.height * (0.1 + Math.random() * 0.25);
+            const heartsPerTick = isMobile ? 1 : 2;
+
+            for (let i = 0; i < heartsPerTick; i += 1) {
+                createGifHeart(originX + (Math.random() - 0.5) * 14, originY + (Math.random() - 0.5) * 8);
+            }
+        };
+
+        emit();
+        setInterval(emit, GIF_HEART_INTERVAL);
+    }
+
     function navigateWithHearts(url, sourceElement) {
         if (!url) {
             return;
@@ -120,4 +166,6 @@
 
     window.navigateWithHearts = navigateWithHearts;
     window.burstHeartsAtPoint = burstHeartsAtPoint;
+
+    startGifHeartEmitter();
 })();
