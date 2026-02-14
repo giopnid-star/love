@@ -14,6 +14,12 @@ body {
 		linear-gradient(135deg, #2b0b1f 0%, #5e1b42 42%, #a83262 100%);
 	overflow-x: hidden;
 	transition: opacity 0.55s ease, transform 0.55s ease;
+	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff6fa5' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6 6 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z'/%3E%3C/svg%3E") 14 14, auto;
+}
+
+a,
+button {
+	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffd1e6' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6 6 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z'/%3E%3Ccircle cx='18.6' cy='4.7' r='2' fill='%23fff'/%3E%3C/svg%3E") 14 14, pointer;
 }
 
 body.page-fade-out {
@@ -49,6 +55,38 @@ body.page-fade-out {
 }
 
 .click-heart::after {
+	top: -50%;
+}
+
+.trail-heart {
+	position: fixed;
+	z-index: 9998;
+	pointer-events: none;
+	width: 10px;
+	height: 10px;
+	background: #ffb0cd;
+	transform: translate(-50%, -50%) rotate(45deg);
+	border-radius: 2px;
+	opacity: 0.88;
+	animation: trailHeartFloat 0.72s ease-out forwards;
+	filter: drop-shadow(0 2px 4px rgba(82, 0, 36, 0.34));
+}
+
+.trail-heart::before,
+.trail-heart::after {
+	content: '';
+	position: absolute;
+	width: inherit;
+	height: inherit;
+	background: inherit;
+	border-radius: 50%;
+}
+
+.trail-heart::before {
+	left: -50%;
+}
+
+.trail-heart::after {
 	top: -50%;
 }
 
@@ -694,6 +732,20 @@ h2 {
 			calc(-50% + var(--drift-x, 0px)),
 			calc(-50% + var(--drift-y, -60px))
 		) scale(var(--heart-scale, 1.1)) rotate(var(--heart-rotate, 12deg));
+	}
+}
+
+@keyframes trailHeartFloat {
+	0% {
+		opacity: 0.88;
+		transform: translate(-50%, -50%) scale(0.75) rotate(45deg);
+	}
+	100% {
+		opacity: 0;
+		transform: translate(
+			calc(-50% + var(--trail-x, 0px)),
+			calc(-50% + var(--trail-y, -30px))
+		) scale(var(--trail-scale, 1)) rotate(45deg);
 	}
 }
 

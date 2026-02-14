@@ -1,8 +1,12 @@
 (function () {
     const NAV_DELAY = 680;
     const isMobile = window.matchMedia('(max-width: 600px)').matches;
-    const CLICK_BURST_COUNT = isMobile ? 9 : 14;
-    const NAV_BURST_COUNT = isMobile ? 22 : 34;
+    const CLICK_BURST_COUNT = isMobile ? 14 : 22;
+    const NAV_BURST_COUNT = isMobile ? 34 : 52;
+    const TRAIL_INTERVAL = isMobile ? 70 : 38;
+    const TRAIL_SPAWN_CHANCE = isMobile ? 0.62 : 0.86;
+
+    let lastTrailTime = 0;
 
     function createBurstHeart(x, y, angle, distance, delay) {
         const heart = document.createElement('span');
@@ -51,6 +55,24 @@
         }
     }
 
+    function createTrailHeart(x, y) {
+        const heart = document.createElement('span');
+        heart.className = 'trail-heart';
+
+        const driftX = (Math.random() - 0.5) * 34;
+        const driftY = -28 - Math.random() * 22;
+        const scale = (0.65 + Math.random() * 0.45).toFixed(2);
+
+        heart.style.left = `${x}px`;
+        heart.style.top = `${y}px`;
+        heart.style.setProperty('--trail-x', `${driftX.toFixed(1)}px`);
+        heart.style.setProperty('--trail-y', `${driftY.toFixed(1)}px`);
+        heart.style.setProperty('--trail-scale', scale);
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 760);
+    }
+
     function navigateWithHearts(url, sourceElement) {
         if (!url) {
             return;
@@ -82,6 +104,18 @@
         }
 
         burstHeartsAtPoint(event.clientX, event.clientY, CLICK_BURST_COUNT);
+    });
+
+    document.addEventListener('pointermove', (event) => {
+        const now = Date.now();
+        if (now - lastTrailTime < TRAIL_INTERVAL) {
+            return;
+        }
+
+        lastTrailTime = now;
+        if (Math.random() <= TRAIL_SPAWN_CHANCE) {
+            createTrailHeart(event.clientX, event.clientY);
+        }
     });
 
     window.navigateWithHearts = navigateWithHearts;
