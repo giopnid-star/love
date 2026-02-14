@@ -13,6 +13,43 @@ body {
 		radial-gradient(circle at 80% 0%, rgba(255, 120, 160, 0.3), transparent 32%),
 		linear-gradient(135deg, #2b0b1f 0%, #5e1b42 42%, #a83262 100%);
 	overflow-x: hidden;
+	transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+body.page-fade-out {
+	opacity: 0;
+	transform: scale(0.99);
+}
+
+.click-heart {
+	position: fixed;
+	z-index: 9999;
+	pointer-events: none;
+	width: 14px;
+	height: 14px;
+	background: #ff9fc1;
+	transform: translate(-50%, -50%) rotate(45deg);
+	border-radius: 2px;
+	animation: clickHeartBurst 0.95s ease-out forwards;
+	filter: drop-shadow(0 2px 6px rgba(92, 0, 39, 0.45));
+}
+
+.click-heart::before,
+.click-heart::after {
+	content: '';
+	position: absolute;
+	width: inherit;
+	height: inherit;
+	background: inherit;
+	border-radius: 50%;
+}
+
+.click-heart::before {
+	left: -50%;
+}
+
+.click-heart::after {
+	top: -50%;
 }
 
 .hero {
@@ -640,6 +677,23 @@ h2 {
 	100% {
 		transform: translate3d(30px, 118vh, 0) rotate(380deg);
 		opacity: 0;
+	}
+}
+
+@keyframes clickHeartBurst {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.4) rotate(45deg);
+	}
+	15% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+		transform: translate(
+			calc(-50% + var(--drift-x, 0px)),
+			calc(-50% + var(--drift-y, -60px))
+		) scale(var(--heart-scale, 1.1)) rotate(var(--heart-rotate, 12deg));
 	}
 }
 

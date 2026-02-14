@@ -49,6 +49,7 @@
         </section>
     </main>
 
+    <script src="app.js"></script>
     <script>
         const yesButton = document.getElementById('yesBtn');
         const noButton = document.getElementById('noBtn');
@@ -58,6 +59,11 @@
         const maxNoClicks = 7;
 
         yesButton.addEventListener('click', () => {
+            if (typeof window.navigateWithHearts === 'function') {
+                window.navigateWithHearts('main.html', yesButton);
+                return;
+            }
+
             window.location.href = 'main.html';
         });
 
